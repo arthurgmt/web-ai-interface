@@ -5,153 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Générateur d'Images IA</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <!-- Modal d'authentification -->
         <div id="authModal" class="modal active">
             <div class="modal-content">
-                <h2>Authentification</h2>
-                <p>Entrez votre clé API OpenAI pour continuer</p>
-                <input type="password" id="apiKeyInput" placeholder="sk-..." autocomplete="off">
-                <button id="submitApiKey" class="btn btn-primary">Valider</button>
+                <h2>Clé API OpenAI</h2>
+                <input type="password" id="apiKey" placeholder="sk-...">
+                <button onclick="authenticate()">Valider</button>
             </div>
         </div>
 
-        <!-- Interface principale -->
-        <div id="mainInterface" class="main-interface">
-            <header>
-                <h1>Générateur d'Images IA</h1>
-                <button id="changeApiKey" class="btn btn-secondary">Changer la clé API</button>
-            </header>
-
-            <div class="content-wrapper">
-                <!-- Zone de chat -->
-                <div class="chat-section">
-                    <div class="chat-header">
-                        <h3>Description de l'image</h3>
-                    </div>
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="message assistant">
-                            <p>Bonjour ! Décrivez l'image que vous souhaitez générer. Soyez aussi détaillé que possible pour obtenir de meilleurs résultats.</p>
-                        </div>
-                    </div>
-                    <div class="chat-input-wrapper">
-                        <textarea id="promptInput" placeholder="Décrivez votre image..." rows="3"></textarea>
-                        <button id="generateBtn" class="btn btn-primary">
-                            <span class="btn-text">Générer</span>
-                            <span class="loading-spinner"></span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Zone d'affichage de l'image -->
-                <div class="image-section">
-                    <div class="image-container" id="imageContainer">
-                        <div class="placeholder">
-                            <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                <polyline points="21 15 16 10 5 21"></polyline>
-                            </svg>
-                            <p>Votre image apparaîtra ici</p>
-                        </div>
-                    </div>
-                    <div class="image-controls" id="imageControls">
-                        <button id="downloadBtn" class="btn btn-success" disabled>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
-                            Télécharger
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Panneau de configuration -->
-                <div class="config-section">
-                    <h3>Configuration</h3>
+        <div id="app" class="app">
+            <h1>Générateur d'Images IA</h1>
+            
+            <div class="main">
+                <div class="prompt-section">
+                    <textarea id="prompt" placeholder="Décrivez votre image..."></textarea>
                     
-                    <div class="config-group">
-                        <label>Modèle</label>
-                        <select id="modelSelect">
-                            <option value="dall-e-3">DALL-E 3 (Haute qualité)</option>
-                            <option value="dall-e-2">DALL-E 2 (Rapide)</option>
-                        </select>
-                    </div>
-
-                    <div class="config-group">
-                        <label>Style</label>
-                        <select id="styleSelect">
-                            <option value="">Par défaut</option>
+                    <div class="options">
+                        <select id="style">
+                            <option value="">Style par défaut</option>
                             <option value="realistic">Réaliste</option>
-                            <option value="anime">Anime/Manga</option>
-                            <option value="oil painting">Peinture à l'huile</option>
-                            <option value="watercolor">Aquarelle</option>
-                            <option value="digital art">Art numérique</option>
-                            <option value="3d render">Rendu 3D</option>
                             <option value="cartoon">Cartoon</option>
-                            <option value="sketch">Croquis</option>
-                            <option value="abstract">Abstrait</option>
-                            <option value="minimalist">Minimaliste</option>
-                            <option value="surreal">Surréaliste</option>
-                            <option value="cyberpunk">Cyberpunk</option>
-                            <option value="steampunk">Steampunk</option>
-                            <option value="fantasy">Fantasy</option>
-                            <option value="sci-fi">Science-fiction</option>
-                            <option value="vintage">Vintage</option>
-                            <option value="retro">Rétro</option>
-                            <option value="noir">Noir</option>
-                            <option value="pop art">Pop Art</option>
-                            <option value="impressionist">Impressionniste</option>
+                            <option value="digital art">Art digital</option>
+                            <option value="oil painting">Peinture à l'huile</option>
+                            <option value="anime">Anime</option>
+                        </select>
+                        
+                        <select id="size">
+                            <option value="1024x1024">1024x1024</option>
+                            <option value="1792x1024">1792x1024</option>
+                            <option value="1024x1792">1024x1792</option>
                         </select>
                     </div>
-
-                    <div class="config-group" id="sizeGroup">
-                        <label>Format</label>
-                        <select id="sizeSelect">
-                            <option value="1024x1024">Carré (1024x1024)</option>
-                            <option value="1792x1024">Paysage (1792x1024)</option>
-                            <option value="1024x1792">Portrait (1024x1792)</option>
-                        </select>
+                    
+                    <button id="generate" onclick="generateImage()">Générer</button>
+                </div>
+                
+                <div class="image-section">
+                    <div id="imageContainer">
+                        <p>L'image apparaîtra ici</p>
                     </div>
-
-                    <div class="config-group" id="qualityGroup">
-                        <label>Qualité</label>
-                        <select id="qualitySelect">
-                            <option value="standard">Standard</option>
-                            <option value="hd">HD (Plus lent)</option>
-                        </select>
-                    </div>
-
-                    <div class="config-group">
-                        <label>Préfixes automatiques</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox">
-                                <input type="checkbox" id="highQualityCheck">
-                                <span>Haute qualité</span>
-                            </label>
-                            <label class="checkbox">
-                                <input type="checkbox" id="detailedCheck">
-                                <span>Très détaillé</span>
-                            </label>
-                            <label class="checkbox">
-                                <input type="checkbox" id="cinematicCheck">
-                                <span>Cinématique</span>
-                            </label>
-                            <label class="checkbox">
-                                <input type="checkbox" id="8kCheck">
-                                <span>8K</span>
-                            </label>
-                        </div>
-                    </div>
+                    <button id="download" onclick="downloadImage()" style="display:none;">Télécharger</button>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
