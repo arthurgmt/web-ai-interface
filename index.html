@@ -3,16 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Projet</title>
+    <title>Générateur d'Images IA</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Mon Projet Web</h1>
-        <p>Page de base prête pour GitHub Pages</p>
-        <button id="test-btn">Test</button>
+        <header>
+            <h1>🎨 Générateur d'Images IA</h1>
+            <p>Décrivez votre image et laissez l'IA créer</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <textarea 
+                    id="prompt" 
+                    placeholder="Décrivez l'image que vous voulez générer... (ex: un chat dans l'espace avec des étoiles)"
+                    maxlength="500"
+                ></textarea>
+                
+                <div class="options">
+                    <select id="style">
+                        <option value="">Style par défaut</option>
+                        <option value="realistic">Réaliste</option>
+                        <option value="cartoon">Cartoon</option>
+                        <option value="artistic">Artistique</option>
+                        <option value="digital-art">Art numérique</option>
+                    </select>
+                    
+                    <select id="size">
+                        <option value="512x512">Carré (512x512)</option>
+                        <option value="1024x1024">Grand carré (1024x1024)</option>
+                        <option value="1024x768">Paysage (1024x768)</option>
+                        <option value="768x1024">Portrait (768x1024)</option>
+                    </select>
+                </div>
+
+                <button id="generate-btn" class="generate-btn">
+                    <span id="btn-text">Générer l'image</span>
+                    <div id="loading" class="loading hidden">⏳</div>
+                </button>
+            </div>
+
+            <div class="result-section">
+                <div id="image-container" class="image-container hidden">
+                    <img id="generated-image" alt="Image générée" />
+                    <div class="image-actions">
+                        <button id="download-btn">📥 Télécharger</button>
+                        <button id="new-generation">🔄 Nouvelle génération</button>
+                    </div>
+                </div>
+                
+                <div id="error-message" class="error-message hidden"></div>
+            </div>
+        </main>
+
+        <!-- Modal de configuration API -->
+        <div id="config-modal" class="modal">
+            <div class="modal-content">
+                <h3>🔐 Configuration API OpenAI</h3>
+                <p>Entrez vos informations pour utiliser vos crédits</p>
+                
+                <form id="config-form">
+                    <div class="form-group">
+                        <label for="api-key">Clé API OpenAI:</label>
+                        <input type="password" id="api-key" placeholder="sk-..." required>
+                        <small>Votre clé restera dans votre navigateur uniquement</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="access-code">Code d'accès personnel:</label>
+                        <input type="password" id="access-code" placeholder="Votre code secret" required>
+                        <small>Protection supplémentaire de votre choix</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="config-btn">Configurer</button>
+                        <button type="button" id="cancel-config" class="cancel-btn">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <p class="api-status">API: <span id="api-status">Non configurée</span></p>
+            <button id="config-btn" class="small-btn">⚙️ Configurer API</button>
+        </footer>
     </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
