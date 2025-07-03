@@ -23,6 +23,12 @@
                 <div class="prompt-section">
                     <textarea id="prompt" placeholder="Décrivez votre image..."></textarea>
                     
+                    <div class="upload-section">
+                        <label for="imageUpload">Ajouter une photo de référence (optionnel) :</label>
+                        <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
+                        <div id="uploadPreview"></div>
+                    </div>
+                    
                     <div class="options">
                         <select id="style">
                             <option value="">Style par défaut</option>
